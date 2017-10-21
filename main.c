@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
+#include <float.h>
 
 //program works with square matrix
 int length_matrix;
@@ -55,7 +55,7 @@ float mod(float n){
 
 //encontra o pivo de uma coluna
 float pivot(float** matrix, int j){
-	float pivot = -99999999.999999;	
+	float pivot = -FLT_MAX;	
 	for (int i = j; i < length_matrix ; i++){
 		if ((mod(matrix[i][j]) > pivot) && (matrix[i][j] != 0)){
 			pivot = matrix[i][j];
