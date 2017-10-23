@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <float.h>
 
+
 int length_matrix;
 int number_rows_swapped = 0;
 int pivot_row;
@@ -42,9 +43,9 @@ void print_vector(double** vector){
 
 double** multi_matrix_vector(double** A, double** x){
 
-	double** c = (double**) malloc(length_matrix*sizeof (double*));
+	double** c = (double**) calloc(length_matrix,sizeof (double*));
 	for (int i = 0; i < length_matrix; i++) 
-        c[i] = (double*) malloc(sizeof (double));
+        c[i] = (double*) calloc(1,sizeof (double));
 
 	for (int i = 0; i < length_matrix ; i++)
 		for (int k = 0 ; k < length_matrix ; k++)
@@ -66,7 +67,10 @@ double** solution_Ly_Pb(double** L, double** P, double** b){
 		y[i][0] = c[i][0];
 		for(int j = 0; j < i ; j++)
 			y[i][0] -= L[i][j]*y[j][0];
+			
 	}
+	
+	destroy_matrix(c);
 	return y;	
 }
 

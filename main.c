@@ -73,8 +73,11 @@ int main(int argc, char** argv) {
 		
 		double** x = solution_Ux_y(U,y);
 		printf("SOLUCAO POR LU: \n");
-		print_vector(x);
-
+		//print_vector(x);
+		
+		destroy_matrix(b);
+		destroy_matrix(y);
+		destroy_matrix(x);
 		destroy_matrix(L);
 		destroy_matrix(U);
 		destroy_matrix(matriz);
