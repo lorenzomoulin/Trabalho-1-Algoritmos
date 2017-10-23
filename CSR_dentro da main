@@ -1,0 +1,41 @@
+print_matrix(matriz_transposta);
+
+        /*ARMAZENAMENTO CSR*/
+
+        int length_matrix = retorna_tamanho_matriz();
+        int quantity_non_zeros = retorna_quantidade_nao_zeros();
+
+        int i = 0, j = 0, k = 0, l = 1, contAux = 1;
+        int *IA, *JA;
+        double* AA;
+
+        AA = (double*) malloc(quantity_non_zeros * sizeof (double));
+        JA = (int*) malloc(quantity_non_zeros * sizeof (int));
+        IA = (int*) malloc((length_matrix + 1) * sizeof (int));
+        IA[0] = 1;
+        for (i = 0; i < length_matrix; i++) {
+            for (j = 0; j < length_matrix; j++) {
+                if (matriz_transposta[i][j] != 0) {
+                    AA[k] = matriz_transposta[i][j];
+                    JA[k] = j + 1;
+                    contAux++;
+                    k++;
+                }
+
+            }
+            IA[l] = contAux;
+            l++;
+        }
+        printf("\n");
+        for (i = 0; i < quantity_non_zeros; i++) {
+            printf(" %.3f ", AA[i]);
+        }
+        printf("\n");
+        for (i = 0; i < quantity_non_zeros; i++) {
+            printf(" %d ", JA[i]);
+        }
+        printf("\n");
+        for (i = 0; i < length_matrix + 1; i++) {
+            printf(" %d ", IA[i]);
+        }
+        printf("\n");
