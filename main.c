@@ -54,15 +54,12 @@ int main(int argc, char** argv) {
 		printf("/*MATRIZ P ORIGINAL*/\n");
 		print_matrix(P);
 
-		create_utriangular(L);
-
-	   	
-
 		gauss_elimination(matriz_transposta, L, P);
-
+		
+		create_utriangular(L);
 		printf("/*MATRIZ L*/\n");
 		print_matrix(L);
-
+		
 		copy_matrix(matriz_transposta, U);
 		printf("/*MATRIZ U*/\n");
 		print_matrix(U);
@@ -73,6 +70,10 @@ int main(int argc, char** argv) {
 		double** y = solution_Ly_Pb(L,P,b);
 		printf("y VECTOR\n");
 		print_vector(y);
+		
+		double** x = solution_Ux_y(U,y);
+		printf("SOLUCAO POR LU: \n");
+		print_vector(x);
 
 		destroy_matrix(L);
 		destroy_matrix(U);

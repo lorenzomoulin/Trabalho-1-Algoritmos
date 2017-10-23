@@ -25,6 +25,8 @@ double mod(double n);
 
 double** LU_solution(double** L, double** U, double** P, double** b); 
 
+double** solution_Ux_y(double** U, double** y);
+
 double** solution_Ly_Pb(double** L, double** P, double** b);
 
 double pivot(double** matrix, int j);

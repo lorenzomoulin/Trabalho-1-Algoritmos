@@ -42,9 +42,9 @@ void print_vector(double** vector){
 
 double** multi_matrix_vector(double** A, double** x){
 
-	double** c = (double**) calloc(length_matrix, sizeof (double*));
+	double** c = (double**) malloc(length_matrix*sizeof (double*));
 	for (int i = 0; i < length_matrix; i++) 
-        c[i] = (double*) calloc(1 , sizeof (double));
+        c[i] = (double*) malloc(sizeof (double));
 
 	for (int i = 0; i < length_matrix ; i++)
 		for (int k = 0 ; k < length_matrix ; k++)
@@ -56,8 +56,7 @@ double** multi_matrix_vector(double** A, double** x){
 //solve Ly=Pb
 double** solution_Ly_Pb(double** L, double** P, double** b){
 	double** c = multi_matrix_vector(P,b); 
-	printf("Pb vector\n\n");
-	print_vector(c);
+	
 	
 	double** y = (double**) malloc(length_matrix*sizeof(double*));
 	for(int i = 0; i < length_matrix ; i++)
@@ -69,6 +68,22 @@ double** solution_Ly_Pb(double** L, double** P, double** b){
 			y[i][0] -= L[i][j]*y[j][0];
 	}
 	return y;	
+}
+
+double** solution_Ux_y(double** U, double** y){
+	double** x = (double**) malloc(length_matrix*sizeof(double*));
+	for (int i = 0; i < length_matrix; i++) 
+        x[i] = (double*) malloc(sizeof (double));
+        
+    for(int i = length_matrix-1; i >= 0 ; i--){
+    	x[i][0] = y[i][0];
+    	for (int j = i+1	 ; j < length_matrix ; j++){
+    		x[i][0] -= U[i][j]*x[j][0];
+    	}
+    	x[i][0] /= U[i][i];
+    }
+    	
+	return x;
 }
 
 double** create_matrix_P(){
@@ -215,6 +230,7 @@ double** gauss_elimination(double** matrix, double** L, double** P) {
         if (matrix[j][j] != pivo){
             swap(matrix, j, pivot_row);
 			swap(P, j, pivot_row);
+			swap(L, j, pivot_row);
 		}        
 		clear_column(matrix, L, j, pivo);
     }
