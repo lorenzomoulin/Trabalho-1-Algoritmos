@@ -275,34 +275,40 @@ void copy_vector(double** v1, double** v2){
 		v2[i][0] = v1[i][0];
 }
 
-double max(double** v2, double** v1){
+double max(double** v){
 	double max = -FLT_MAX;
 	
 	for (int i = 0 ; i < length_matrix; i++){
 		
-		double sub = mod(v2[i][0]-v1[i][0]);
-		if (sub > max)
-			max = sub;
+		
+		if (v[i][0] > max)
+			max = v[i][0];
 	}
 	
 	return max;
 }
 
+double** sub_vector(double** v2 , double** v1){
+	double** sub = (double**) malloc(length_matrix*sizeof(double*));
+	for (int i = 0; i < length_matrix; i++) 
+        sub[i] = (double*) malloc(sizeof (double));
+        
+	for (int i = 0; i < length_matrix; i++){
+		
+			sub[i][0] = v2[i][0] - v1[i][0];
+		
+	}
+	return sub;
+}
+
 double error(double** v2, double** v1){
 	double e;
     
-    	
-    e = max(v2,v1);
-    	
-	
-	double max = -FLT_MAX;
-	
-	for (int i = 0 ; i < length_matrix; i++){
-		
-		if (v2[i][0] > max)
-			max = v2[i][0];
-	}
-	e /= max;
+    double** sub = sub_vector(v2,v1);
+    
+    e = max(sub);
+    free(sub);	
+	e /= max(v2);
 	
 	return e;
 }
