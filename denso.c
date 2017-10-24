@@ -1,5 +1,4 @@
 #include "denso.h"
-#include "CSR.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
@@ -8,6 +7,25 @@ int length_matrix;
 int number_rows_swapped = 0;
 int pivot_row;
 int quantity_non_zeros;
+double omega;
+int kmax;
+double tol ;
+
+double** generate_b(double** A){
+	double** b = (double**) malloc(length_matrix* sizeof (double*));
+    for (int i = 0; i < length_matrix; i++)
+        b[i] = (double*) malloc( sizeof (double));
+        
+	for (int i = 0; i < length_matrix; i++){
+		double sum = 0;
+		for (int j = 0; j < length_matrix; j++){
+			sum += A[i][j];
+		}
+		b[i][0] = sum;
+	}
+	return b;
+}
+
 
 double** create_matrix() {
     double** matrix = (double**) malloc(length_matrix * sizeof (double*));
@@ -21,21 +39,7 @@ double** create_matrix() {
 
 //allocate space for vector matrix[length][1]
 
-double** read_vector(FILE * file) {
 
-    double** vector = (double**) malloc(length_matrix * sizeof (double*));
-    for (int i = 0; i < length_matrix; i++)
-        vector[i] = (double*) malloc(sizeof (double));
-
-
-    for (int i = 0; i < length_matrix; i++) {
-        fscanf(file, "%lf%*c", &vector[i][0]);
-    }
-
-    fclose(file);
-
-    return vector;
-}
 
 void print_vector(double** vector) {
     for (int i = 0; i < length_matrix; i++)
@@ -128,6 +132,9 @@ void copy_matrix(double** matrix, double** copy) {
 //read matrix from file 
 
 double ** read_matrix_MatrixMarket(FILE * file) {
+	printf("tolerancia:"); scanf("%lf%*c", &tol);
+    printf("numero max de iteracoes: ");scanf("%d%*c", &kmax);
+    printf("omega: ");scanf("%lf%*c", &omega);
     fscanf(file, "%*[^\n]%*c");
     fscanf(file, "%d%*c%d%*c%d%*c", &length_matrix, &length_matrix, &quantity_non_zeros);
     double** matrix = (double**) calloc(length_matrix, sizeof (double*));
@@ -141,13 +148,7 @@ double ** read_matrix_MatrixMarket(FILE * file) {
     double valor = 0;
 
     while (fscanf(file, "%d%*c%d%*c%*c%lf%*c", &linha, &coluna, &valor) != EOF) {
-        for (int i = 0; i < length_matrix; i++) {
-            for (int j = 0; j < length_matrix; j++) {
-                if (i == (linha - 1) && j == (coluna - 1)) {
-                    matrix[i][j] = valor;
-                }
-            }
-        }
+        matrix[linha-1][coluna-1] = valor;
     }
     fclose(file);
 
@@ -267,4 +268,85 @@ int retorna_length_matrix() {
 
 int retorna_quantity_non_zeros() {
     return quantity_non_zeros;
+}
+
+void copy_vector(double** v1, double** v2){
+	for (int i = 0; i < length_matrix ; i++)
+		v2[i][0] = v1[i][0];
+}
+
+double max(double** v2, double** v1){
+	double max = -FLT_MAX;
+	
+	for (int i = 0 ; i < length_matrix; i++){
+		
+		double sub = mod(v2[i][0]-v1[i][0]);
+		if (sub > max)
+			max = sub;
+	}
+	
+	return max;
+}
+
+double error(double** v2, double** v1){
+	double e;
+    
+    	
+    e = max(v2,v1);
+    	
+	
+	double max = -FLT_MAX;
+	
+	for (int i = 0 ; i < length_matrix; i++){
+		
+		if (v2[i][0] > max)
+			max = v2[i][0];
+	}
+	e /= max;
+	
+	return e;
+}
+
+double** SOR_solution(double** A, double** b){
+	//alocando vetor solução x 
+	double** x = (double**) malloc(length_matrix*sizeof(double*));
+	for (int i = 0; i < length_matrix; i++) 
+        x[i] = (double*) calloc(1,sizeof (double));
+	
+	printf("vetor b: \n");
+	print_vector(b);
+	int k = 0;
+	double err = 1.0;
+	
+	double** ant = (double**) malloc(length_matrix*sizeof(double*));
+	for (int i = 0; i < length_matrix; i++) 
+        ant[i] = (double*) calloc(1,sizeof (double));
+    
+	while ( k < kmax && err > tol){
+		
+		for (int i = 0 ; i < length_matrix  ; i++){
+			
+			
+			
+			for (int j = 0; j < length_matrix; j++){
+				if(i != j)
+					x[i][0] -= A[i][j]*x[j][0];
+				else 
+					continue;
+			}
+			x[i][0] += b[i][0];
+			x[i][0] *= omega/A[i][i];
+			x[i][0] += (1-omega)*ant[i][0];
+			
+			//printf("iteracao %d x%d:%lf\n", k, i, x[i][0]);
+		}
+		k++;
+		err = error(x,ant);
+		copy_vector(x, ant);	
+		printf("vector x%d\n", k-1);
+    	print_vector(ant);
+	}	
+		
+	destroy_matrix(ant);
+	return x;
 }

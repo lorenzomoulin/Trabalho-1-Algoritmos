@@ -4,9 +4,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+double** generate_b(double** A);
+
 double** create_matrix();
 
-double** read_vector(FILE * file);
+
 
 void print_vector(double** vector);
 
@@ -45,5 +47,11 @@ double** gauss_elimination(double** matrix, double** L, double** P);
 double** transpose_matrix(double** matrix);
 
 void destroy_matrix(double** matrix);
+
+int retorna_length_matrix();
+
+int retorna_quantity_non_zeros();
+
+double** SOR_solution(double** A, double** b);
 
 #endif

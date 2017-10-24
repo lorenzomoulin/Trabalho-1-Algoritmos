@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
-#include "denso.h"
 #include "CSR.h"
+#include "denso.h"
 //program works with square matrix
 
 int main(int argc, char** argv) {
@@ -15,32 +15,27 @@ int main(int argc, char** argv) {
         printf("ERRO: Nao escolheu arquivo da matrix\n");
         return 0;
     }
-    if (argv[3] == NULL) {
-        printf("Nao escolheu arquivo do vector!\n");
-        return 0;
-    }
+    
 
     FILE * file = fopen(argv[2], "r");
-    FILE * file2 = fopen(argv[3], "r");
+    
 
     if (file == NULL) {
         printf("ERRO: Nao foi possivel abrir o arquivo da matrix!\n");
         return 0;
     }
-    if (file2 == NULL) {
-        printf("ERRO: Nao foi possivel abrir o arquivo do vector!\n");
-        return 0;
-    }
+    
     /*ARMAZENAMENTO DENSO*/
     if (!strcmp(argv[1], "-DENSO")) {
+    	
+    	
+    	
         double ** matriz = read_matrix_MatrixMarket(file);
-        double** b = read_vector(file2);
+        
         double ** matriz_transposta = transpose_matrix(matriz);
 
-        printf("MATRIZ ORIGINAL!\n");
-        print_matrix(matriz);
-        printf("MATRIZ TRANSPOSTA!\n");
-        print_matrix(matriz_transposta);
+        double** b = generate_b(matriz_transposta);
+        	
 
         //alocando matriz U
         double** U = create_matrix();
@@ -50,30 +45,29 @@ int main(int argc, char** argv) {
 
         //alocando matrix de permutacoes
         double** P = create_matrix_P();
-        printf("/*MATRIZ P ORIGINAL*/\n");
-        print_matrix(P);
+        ;
 
         gauss_elimination(matriz_transposta, L, P);
 
         create_utriangular(L);
-        printf("/*MATRIZ L*/\n");
-        print_matrix(L);
+        
 
         copy_matrix(matriz_transposta, U);
-        printf("/*MATRIZ U*/\n");
-        print_matrix(U);
+        
 
 
-        printf("/*MATRIZ P*/\n");
-        print_matrix(P);
+        
         double** y = solution_Ly_Pb(L, P, b);
-        printf("y VECTOR\n");
-        print_vector(y);
-
+        
         double** x = solution_Ux_y(U, y);
         printf("SOLUCAO POR LU: \n");
-        //print_vector(x);
-
+        print_vector(x);
+		destroy_matrix(x);
+		
+		x = SOR_solution(matriz_transposta, b);
+		printf("SOLUCAO POR SOR: \n");
+		print_vector(x);	
+		
         destroy_matrix(b);
         destroy_matrix(y);
         destroy_matrix(x);
@@ -85,10 +79,11 @@ int main(int argc, char** argv) {
 
         return 0;
 
-    } else if (!strcmp(argv[1], "-CSR")) {
+    } else  {
         double ** matriz = read_matrix_MatrixMarket(file);
-        double** b = read_vector(file2);
+        
         double ** matriz_transposta = transpose_matrix(matriz);
+        double** b = generate_b(matriz_transposta);
         double ** matriz_CSR = create_matrix_CSR(matriz_transposta);
         
         print_matrix_CSR(matriz_CSR);

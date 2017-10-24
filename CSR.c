@@ -1,8 +1,8 @@
 #include "CSR.h"
-#include "denso.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
+
 
 double** create_matrix_CSR(double ** matriz_transposta) {
 
@@ -12,8 +12,8 @@ double** create_matrix_CSR(double ** matriz_transposta) {
     int length_matrix = retorna_length_matrix();
 
     double *AA = (double*) malloc(quantity_non_zeros * sizeof (double));
-    double *JA = (int*) malloc(quantity_non_zeros * sizeof (double));
-    double *IA = (int*) malloc((length_matrix + 1) * sizeof (double));
+    double *JA = (double*) malloc(quantity_non_zeros * sizeof (double));
+    double *IA = (double*) malloc((length_matrix + 1) * sizeof (double));
 
     IA[0] = 1;
 
