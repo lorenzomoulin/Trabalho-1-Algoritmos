@@ -14,6 +14,7 @@ float** SOR_solution_CSR(float** matrix_CSR, float** b);
 int number_elements_row(float** A, int row);
 
 float access_CSR(float** A, int i, int j);
+int get_column(float** A, int i, int j);
 
 #endif /* CSR_H */
 

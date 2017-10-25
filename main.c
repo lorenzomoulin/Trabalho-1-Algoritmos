@@ -99,7 +99,7 @@ int main(int argc, char** argv) {
         float** b = generate_b(matriz_transposta);
         float** matriz_CSR = create_matrix_CSR(matriz_transposta);
         print_matrix_CSR(matriz_CSR);
-        printf("elemento 0,1 : %e\n\n", access_CSR(matriz_CSR,0,2));
+        printf("coluna do elemento 1,1 : %d\n\n", get_column(matriz_CSR,1,2));
         float** x = SOR_solution_CSR(matriz_CSR, b);
         print_vector(x);
         

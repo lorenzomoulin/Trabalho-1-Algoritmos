@@ -74,11 +74,11 @@ int number_elements_row(float** A, int row){
 
 float access_CSR(float** A, int i, int j){
 	
-	return A[0][(int)A[1][i+j-1]];
+	return A[0][(int)(A[2][i]+j-2)];
 }
 
 int get_column(float** A, int i, int j){
-	return (int)A[1][(int)A[1][i+j-1]];
+	return (int)A[1][(int)(A[2][i]+j-2)];
 }
 
 float** SOR_solution_CSR(float** matrix_CSR, float** b){
@@ -109,6 +109,7 @@ float** SOR_solution_CSR(float** matrix_CSR, float** b){
 			double sum = 0;
 			int n = number_elements_row(matrix_CSR, i);
 			for (int j = 1; j <= n; j++){
+				printf("coluna %d\n", get_column(matrix_CSR,i,j));
 				if(i==get_column(matrix_CSR,i,j))
 					continue;
 				sum += access_CSR(matrix_CSR,i,j)*x[get_column(matrix_CSR,i,j)][0];
