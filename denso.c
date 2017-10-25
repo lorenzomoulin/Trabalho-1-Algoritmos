@@ -7,17 +7,17 @@ int length_matrix;
 int number_rows_swapped = 0;
 int pivot_row;
 int quantity_non_zeros;
-double omega;
+float omega;
 int kmax;
-double tol ;
+float tol;
 
-double** generate_b(double** A){
-	double** b = (double**) malloc(length_matrix* sizeof (double*));
+float** generate_b(float** A){
+	float** b = (float**) malloc(length_matrix* sizeof (float*));
     for (int i = 0; i < length_matrix; i++)
-        b[i] = (double*) malloc( sizeof (double));
+        b[i] = (float*) malloc( sizeof (float));
         
 	for (int i = 0; i < length_matrix; i++){
-		double sum = 0;
+		float sum = 0;
 		for (int j = 0; j < length_matrix; j++){
 			sum += A[i][j];
 		}
@@ -27,11 +27,11 @@ double** generate_b(double** A){
 }
 
 
-double** create_matrix() {
-    double** matrix = (double**) malloc(length_matrix * sizeof (double*));
+float** create_matrix() {
+    float** matrix = (float**) malloc(length_matrix * sizeof (float*));
 
     for (int i = 0; i < length_matrix; i++) {
-        matrix[i] = (double*) malloc(length_matrix * sizeof (double));
+        matrix[i] = (float*) malloc(length_matrix * sizeof (float));
     }
 
     return matrix;
@@ -41,16 +41,16 @@ double** create_matrix() {
 
 
 
-void print_vector(double** vector) {
+void print_vector(float** vector) {
     for (int i = 0; i < length_matrix; i++)
-        printf("| %lf |\n", vector[i][0]);
+        printf("| %e |\n", vector[i][0]);
 }
 
-double** multi_matrix_vector(double** A, double** x) {
+float** multi_matrix_vector(float** A, float** x) {
 
-    double** c = (double**) calloc(length_matrix, sizeof (double*));
+    float** c = (float**) calloc(length_matrix, sizeof (float*));
     for (int i = 0; i < length_matrix; i++)
-        c[i] = (double*) calloc(1, sizeof (double));
+        c[i] = (float*) calloc(1, sizeof (float));
 
     for (int i = 0; i < length_matrix; i++)
         for (int k = 0; k < length_matrix; k++)
@@ -61,13 +61,13 @@ double** multi_matrix_vector(double** A, double** x) {
 
 //solve Ly=Pb
 
-double** solution_Ly_Pb(double** L, double** P, double** b) {
-    double** c = multi_matrix_vector(P, b);
+float** solution_Ly_Pb(float** L, float** P, float** b) {
+    float** c = multi_matrix_vector(P, b);
 
 
-    double** y = (double**) malloc(length_matrix * sizeof (double*));
+    float** y = (float**) malloc(length_matrix * sizeof (float*));
     for (int i = 0; i < length_matrix; i++)
-        y[i] = (double*) malloc(sizeof (double));
+        y[i] = (float*) malloc(sizeof (float));
 
     for (int i = 0; i < length_matrix; i++) {
         y[i][0] = c[i][0];
@@ -80,10 +80,10 @@ double** solution_Ly_Pb(double** L, double** P, double** b) {
     return y;
 }
 
-double** solution_Ux_y(double** U, double** y) {
-    double** x = (double**) malloc(length_matrix * sizeof (double*));
+float** solution_Ux_y(float** U, float** y) {
+    float** x = (float**) malloc(length_matrix * sizeof (float*));
     for (int i = 0; i < length_matrix; i++)
-        x[i] = (double*) malloc(sizeof (double));
+        x[i] = (float*) malloc(sizeof (float));
 
     for (int i = length_matrix - 1; i >= 0; i--) {
         x[i][0] = y[i][0];
@@ -96,11 +96,11 @@ double** solution_Ux_y(double** U, double** y) {
     return x;
 }
 
-double** create_matrix_P() {
-    double** matrix = (double**) calloc(length_matrix, sizeof (double*));
+float** create_matrix_P() {
+    float** matrix = (float**) calloc(length_matrix, sizeof (float*));
 
     for (int i = 0; i < length_matrix; i++)
-        matrix[i] = (double*) calloc(length_matrix, sizeof (double));
+        matrix[i] = (float*) calloc(length_matrix, sizeof (float));
 
     for (int i = 0; i < length_matrix; i++)
         matrix[i][i] = 1;
@@ -108,12 +108,12 @@ double** create_matrix_P() {
     return matrix;
 }
 
-void print_matrix(double** matrix) {
+void print_matrix(float** matrix) {
     for (int i = 0; i < length_matrix; i++) {
         printf("|");
         for (int j = 0; j < length_matrix; j++) {
 
-            printf("%f ", matrix[i][j]);
+            printf("%e ", matrix[i][j]);
         }
         printf("|\n");
     }
@@ -121,7 +121,7 @@ void print_matrix(double** matrix) {
     printf("\n\n\n");
 }
 
-void copy_matrix(double** matrix, double** copy) {
+void copy_matrix(float** matrix, float** copy) {
     for (int i = 0; i < length_matrix; i++) {
         for (int j = 0; j < length_matrix; j++) {
             copy[i][j] = matrix[i][j];
@@ -131,23 +131,23 @@ void copy_matrix(double** matrix, double** copy) {
 
 //read matrix from file 
 
-double ** read_matrix_MatrixMarket(FILE * file) {
-	printf("tolerancia:"); scanf("%lf%*c", &tol);
+float ** read_matrix_MatrixMarket(FILE * file) {
+	printf("tolerancia:"); scanf("%f%*c", &tol);
     printf("numero max de iteracoes: ");scanf("%d%*c", &kmax);
-    printf("omega: ");scanf("%lf%*c", &omega);
+    printf("omega: ");scanf("%f%*c", &omega);
     fscanf(file, "%*[^\n]%*c");
     fscanf(file, "%d%*c%d%*c%d%*c", &length_matrix, &length_matrix, &quantity_non_zeros);
-    double** matrix = (double**) calloc(length_matrix, sizeof (double*));
+    float** matrix = (float**) calloc(length_matrix, sizeof (float*));
 
     int tam = length_matrix, qnt = quantity_non_zeros;
 
     for (int i = 0; i < length_matrix; i++) {
-        matrix[i] = (double*) calloc(length_matrix, sizeof (double));
+        matrix[i] = (float*) calloc(length_matrix, sizeof (float));
     }
     int linha = 0, coluna = 0;
-    double valor = 0;
+    float valor = 0;
 
-    while (fscanf(file, "%d%*c%d%*c%*c%lf%*c", &linha, &coluna, &valor) != EOF) {
+    while (fscanf(file, "%d%*c%d%*c%*c%f%*c", &linha, &coluna, &valor) != EOF) {
         matrix[linha-1][coluna-1] = valor;
     }
     fclose(file);
@@ -155,14 +155,14 @@ double ** read_matrix_MatrixMarket(FILE * file) {
     return matrix;
 }
 
-double mod(double n) {
+float mod(float n) {
     return n >= 0 ? n : -1 * n;
 }
 
 //encontra o pivo de uma coluna
 
-double pivot(double** matrix, int j) {
-    double pivot = -FLT_MAX;
+float pivot(float** matrix, int j) {
+    float pivot = -FLT_MAX;
     for (int i = j; i < length_matrix; i++) {
         if ((mod(matrix[i][j]) > pivot) && (matrix[i][j] != 0)) {
             pivot = matrix[i][j];
@@ -175,8 +175,8 @@ double pivot(double** matrix, int j) {
 
 //swap two lines of matrix
 
-void swap(double** matrix, int row1, int row2) {
-    double* aux = (double*) malloc(length_matrix * sizeof (double));
+void swap(float** matrix, int row1, int row2) {
+    float* aux = (float*) malloc(length_matrix * sizeof (float));
 
     for (int i = 0; i < length_matrix; i++)
         aux[i] = matrix[row1][i];
@@ -189,7 +189,7 @@ void swap(double** matrix, int row1, int row2) {
     free(aux);
 }
 
-void add_row(double** matrix, int row1, int row2, double k) {
+void add_row(float** matrix, int row1, int row2, float k) {
     for (int j = 0; j < length_matrix; j++) {
         if (j <= row1) {
             matrix[row2][j] = 0;
@@ -199,7 +199,7 @@ void add_row(double** matrix, int row1, int row2, double k) {
     }
 }
 
-int eliminated(double** matrix) {
+int eliminated(float** matrix) {
     for (int i = 1; i < length_matrix; i++)
         for (int j = 0; j < i; j++)
             if (matrix[i][j])
@@ -209,7 +209,7 @@ int eliminated(double** matrix) {
 
 //generate base of upper triangular matrix
 
-void create_utriangular(double** matrix) {
+void create_utriangular(float** matrix) {
     for (int i = 0; i < length_matrix; i++) {
         for (int j = i; j < length_matrix; j++) {
             if (i == j)
@@ -222,9 +222,9 @@ void create_utriangular(double** matrix) {
 
 //apply the rule Ln <--- Ln -Mnp*Lp
 
-void clear_column(double** matrix, double** L, int column, double pivot) {
+void clear_column(float** matrix, float** L, int column, float pivot) {
     for (int i = column + 1; i < length_matrix; i++) {
-        double multi = matrix[i][column] / pivot;
+        float multi = matrix[i][column] / pivot;
 
         L[i][column] = multi;
         add_row(matrix, column, i, multi);
@@ -232,9 +232,9 @@ void clear_column(double** matrix, double** L, int column, double pivot) {
     }
 }
 
-double** gauss_elimination(double** matrix, double** L, double** P) {
+float** gauss_elimination(float** matrix, float** L, float** P) {
     for (int j = 0; j < length_matrix; j++) {
-        double pivo = pivot(matrix, j);
+        float pivo = pivot(matrix, j);
         if (matrix[j][j] != pivo) {
             swap(matrix, j, pivot_row);
             swap(P, j, pivot_row);
@@ -244,8 +244,8 @@ double** gauss_elimination(double** matrix, double** L, double** P) {
     }
 }
 
-double** transpose_matrix(double** matrix) {
-    double** transpose_matrix = create_matrix();
+float** transpose_matrix(float** matrix) {
+    float** transpose_matrix = create_matrix();
 
     for (int i = 0; i < length_matrix; i++) {
         for (int j = 0; j < length_matrix; j++) {
@@ -255,28 +255,42 @@ double** transpose_matrix(double** matrix) {
     return transpose_matrix;
 }
 
-void destroy_matrix(double** matrix) {
+void destroy_matrix(float** matrix) {
 
     for (int i = 0; i < length_matrix; i++)
         free(matrix[i]);
     free(matrix);
 }
 
-int retorna_length_matrix() {
+int return_length_matrix() {
     return length_matrix;
 }
 
-int retorna_quantity_non_zeros() {
+int return_quantity_non_zeros() {
     return quantity_non_zeros;
 }
 
-void copy_vector(double** v1, double** v2){
+float return_omega(){
+	return omega;
+}
+
+float return_tol(){
+	return tol;
+}
+
+float return_kmax(){
+	return kmax;
+}
+
+
+
+void copy_vector(float** v1, float** v2){
 	for (int i = 0; i < length_matrix ; i++)
 		v2[i][0] = v1[i][0];
 }
 
-double max(double** v){
-	double max = -FLT_MAX;
+float max(float** v){
+	float max = -FLT_MAX;
 	
 	for (int i = 0 ; i < length_matrix; i++){
 		
@@ -288,69 +302,65 @@ double max(double** v){
 	return max;
 }
 
-double** sub_vector(double** v2 , double** v1){
-	double** sub = (double**) malloc(length_matrix*sizeof(double*));
+float** sub_vector(float** v2 , float** v1){
+	float** sub = (float**) malloc(length_matrix*sizeof(float*));
 	for (int i = 0; i < length_matrix; i++) 
-        sub[i] = (double*) malloc(sizeof (double));
+        sub[i] = (float*) malloc(sizeof (float));
         
 	for (int i = 0; i < length_matrix; i++){
 		
-			sub[i][0] = v2[i][0] - v1[i][0];
+			sub[i][0] = mod(v2[i][0] - v1[i][0]);
 		
 	}
 	return sub;
 }
 
-double error(double** v2, double** v1){
-	double e;
+float error(float** v2, float** v1){
+	float e;
     
-    double** sub = sub_vector(v2,v1);
+    float** sub = sub_vector(v2,v1);
     
     e = max(sub);
-    free(sub);	
+    destroy_matrix(sub);	
 	e /= max(v2);
 	
 	return e;
 }
 
-double** SOR_solution(double** A, double** b){
+float** SOR_solution(float** A, float** b){
 	//alocando vetor solução x 
-	double** x = (double**) malloc(length_matrix*sizeof(double*));
+	float** x = (float**) calloc(length_matrix,sizeof(float*));
 	for (int i = 0; i < length_matrix; i++) 
-        x[i] = (double*) calloc(1,sizeof (double));
+        x[i] = (float*) calloc(1,sizeof (float));
 	
 	printf("vetor b: \n");
 	print_vector(b);
 	int k = 0;
-	double err = 1.0;
+	float err = 1.0;
 	
-	double** ant = (double**) malloc(length_matrix*sizeof(double*));
+	float** ant = (float**) calloc(length_matrix,sizeof(float*));
 	for (int i = 0; i < length_matrix; i++) 
-        ant[i] = (double*) calloc(1,sizeof (double));
+        ant[i] = (float*) calloc(1,sizeof (float));
     
-	while ( k < kmax && err > tol){
+    copy_vector(ant,x);
+    
+	while ( (k < kmax) && (err > tol)){
 		
-		for (int i = 0 ; i < length_matrix  ; i++){
+		for (int i = 0; i < length_matrix; i++){
+			double sum = 0;
+			for (int j = 0; j < i; j++)
+				sum += A[i][j]*x[j][0];
+			for (int j = i + 1; j < length_matrix; j++)
+				sum += A[i][j]*x[j][0];
 			
+			x[i][0] = omega*(b[i][0] - sum)/A[i][i] + (1-omega)*ant[i][0];
 			
-			
-			for (int j = 0; j < length_matrix; j++){
-				if(i != j)
-					x[i][0] -= A[i][j]*x[j][0];
-				else 
-					continue;
-			}
-			x[i][0] += b[i][0];
-			x[i][0] *= omega/A[i][i];
-			x[i][0] += (1-omega)*ant[i][0];
-			
-			//printf("iteracao %d x%d:%lf\n", k, i, x[i][0]);
 		}
+		printf("vetor solucao iteracao %d\n\n", k);
+			print_vector(x);
 		k++;
-		err = error(x,ant);
-		copy_vector(x, ant);	
-		printf("vector x%d\n", k-1);
-    	print_vector(ant);
+		err = error(x, ant);
+		copy_vector(x, ant);
 	}	
 		
 	destroy_matrix(ant);

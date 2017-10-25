@@ -4,54 +4,64 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-double** generate_b(double** A);
+float** generate_b(float** A);
 
-double** create_matrix();
+float** create_matrix();
 
+void print_vector(float** vector);
 
+float** create_matrix_P();
 
-void print_vector(double** vector);
+void print_matrix(float** matrix);
 
-double** create_matrix_P();
+float** multi_matrix_vector(float** matrix, float** vector);
 
-void print_matrix(double** matrix);
+void copy_matrix(float** matrix, float** copy);
 
-double** multi_matrix_vector(double** matrix, double** vector);
+float ** read_matrix_MatrixMarket(FILE * file);
 
-void copy_matrix(double** matrix, double** copy);
+float mod(float n);
 
-double ** read_matrix_MatrixMarket(FILE * file);
+float** LU_solution(float** L, float** U, float** P, float** b); 
 
-double mod(double n);
+float** solution_Ux_y(float** U, float** y);
 
-double** LU_solution(double** L, double** U, double** P, double** b); 
+float** solution_Ly_Pb(float** L, float** P, float** b);
 
-double** solution_Ux_y(double** U, double** y);
+float pivot(float** matrix, int j);
 
-double** solution_Ly_Pb(double** L, double** P, double** b);
+void swap(float** matrix, int row1, int row2);
 
-double pivot(double** matrix, int j);
+void add_row(float** matrix, int row1, int row2, float k);
 
-void swap(double** matrix, int row1, int row2);
+int eliminated(float** matrix);
 
-void add_row(double** matrix, int row1, int row2, double k);
+void create_utriangular(float** matrix);
 
-int eliminated(double** matrix);
+void clear_column(float** matrix, float** L, int column, float pivot);
 
-void create_utriangular(double** matrix);
+float** gauss_elimination(float** matrix, float** L, float** P);
 
-void clear_column(double** matrix, double** L, int column, double pivot);
+float** transpose_matrix(float** matrix);
 
-double** gauss_elimination(double** matrix, double** L, double** P);
+void destroy_matrix(float** matrix);
 
-double** transpose_matrix(double** matrix);
+int return_length_matrix();
 
-void destroy_matrix(double** matrix);
+void copy_vector(float** v1, float** v2);
 
-int retorna_length_matrix();
+float error(float** v2, float** v1);
 
-int retorna_quantity_non_zeros();
+float** sub_vector(float** v2 , float** v1);
 
-double** SOR_solution(double** A, double** b);
+int return_quantity_non_zeros();
+
+float return_omega();
+
+float return_tol();
+
+float return_kmax();
+
+float** SOR_solution(float** A, float** b);
 
 #endif
