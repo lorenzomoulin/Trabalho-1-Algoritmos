@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <float.h>
 
-
 float** create_matrix_CSR(float ** matriz_transposta) {
 
     int i, j, k = 0, l = 1, contAux = 1;
@@ -21,12 +20,12 @@ float** create_matrix_CSR(float ** matriz_transposta) {
         for (j = 0; j < length_matrix; j++) {
             if (matriz_transposta[i][j] != 0) {
                 AA[k] = matriz_transposta[i][j];
-                JA[k] = j ;
+                JA[k] = j;
                 contAux++;
                 k++;
             }
         }
-        IA[l] = contAux ;
+        IA[l] = contAux;
         l++;
     }
     float** matrix_CSR = (float**) malloc(length_matrix * sizeof (float*));
@@ -68,64 +67,64 @@ void print_matrix_CSR(float** matrix) {
     printf("\n\n\n");
 }
 
-int number_elements_row(float** A, int row){
-	return A[2][row+1] - A[2][row];
+int number_elements_row(float** A, int row) {
+    return A[2][row + 1] - A[2][row];
 }
 
-float access_CSR(float** A, int i, int j){
-	
-	return A[0][(int)(A[2][i]+j-2)];
+float access_CSR(float** A, int i, int j) {
+
+    return A[0][(int) (A[2][i] + j - 2)];
 }
 
-int get_column(float** A, int i, int j){
-	return (int)A[1][(int)(A[2][i]+j-2)];
+int get_column(float** A, int i, int j) {
+    return (int) A[1][(int) (A[2][i] + j - 2)];
 }
 
-float** SOR_solution_CSR(float** matrix_CSR, float** b){
-	//alocando vetor solução x 
-	int order = return_length_matrix();
-	float** x = (float**) calloc(order,sizeof(float*));
-	for (int i = 0; i < order; i++) 
-        x[i] = (float*) calloc(1,sizeof (float));
-	
-	printf("vetor b: \n");
-	print_vector(b);
-	int k = 0;
-	float err = 1.0;
-	float omega = return_omega();
-	float tol = return_tol();
-	int kmax = return_kmax();
-	
-	
-	float** ant = (float**) calloc(order,sizeof(float*));
-	for (int i = 0; i < order; i++) 
-        ant[i] = (float*) calloc(1,sizeof (float));
-    
-    copy_vector(ant,x);
-    
-	while ( (k < kmax) && (err > tol)){
-		
-		for (int i = 0; i < order; i++){
-			double sum = 0;
-			int n = number_elements_row(matrix_CSR, i);
-			for (int j = 1; j <= n; j++){
-				printf("coluna %d\n", get_column(matrix_CSR,i,j));
-				if(i==get_column(matrix_CSR,i,j))
-					continue;
-				sum += access_CSR(matrix_CSR,i,j)*x[get_column(matrix_CSR,i,j)][0];
-				
-			}
-			
-				
-			x[i][0] = omega*(b[i][0] - sum)/access_CSR(matrix_CSR,i,i+1) + (1-omega)*ant[i][0];
-		}
-		printf("vetor solucao iteracao %d\n\n", k);
-			print_vector(x);
-		k++;
-		err = error(x, ant);
-		copy_vector(x, ant);
-	}	
-		
-	destroy_matrix(ant);
-	return x;
+float** SOR_solution_CSR(float** matrix_CSR, float** b) {
+    //alocando vetor solução x 
+    int order = return_length_matrix();
+    float** x = (float**) calloc(order, sizeof (float*));
+    for (int i = 0; i < order; i++)
+        x[i] = (float*) calloc(1, sizeof (float));
+
+    printf("vetor b: \n");
+    print_vector(b);
+    int k = 0;
+    float err = 1.0;
+    float omega = return_omega();
+    float tol = return_tol();
+    int kmax = return_kmax();
+
+
+    float** ant = (float**) calloc(order, sizeof (float*));
+    for (int i = 0; i < order; i++)
+        ant[i] = (float*) calloc(1, sizeof (float));
+
+    copy_vector(ant, x);
+
+    while ((k < kmax) && (err > tol)) {
+
+        for (int i = 0; i < order; i++) {
+            double sum = 0;
+            int n = number_elements_row(matrix_CSR, i);
+            for (int j = 1; j <= n; j++) {
+                printf("coluna %d\n", get_column(matrix_CSR, i, j));
+                if (i == get_column(matrix_CSR, i, j))
+                    continue;
+                sum += access_CSR(matrix_CSR, i, j) * x[get_column(matrix_CSR, i, j)][0];
+
+            }
+
+
+            x[i][0] = omega * (b[i][0] - sum) / access_CSR(matrix_CSR, i, i + 1) + (1 - omega) * ant[i][0];
+        }
+        printf("vetor solucao iteracao %d\n\n", k);
+        print_vector(x);
+        k++;
+        err = error(x, ant);
+        copy_vector(x, ant);
+    }
+
+    destroy_matrix(ant);
+    return x;
 }

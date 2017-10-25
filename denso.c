@@ -11,21 +11,20 @@ float omega;
 int kmax;
 float tol;
 
-float** generate_b(float** A){
-	float** b = (float**) malloc(length_matrix* sizeof (float*));
+float** generate_b(float** A) {
+    float** b = (float**) malloc(length_matrix * sizeof (float*));
     for (int i = 0; i < length_matrix; i++)
-        b[i] = (float*) malloc( sizeof (float));
-        
-	for (int i = 0; i < length_matrix; i++){
-		float sum = 0;
-		for (int j = 0; j < length_matrix; j++){
-			sum += A[i][j];
-		}
-		b[i][0] = sum;
-	}
-	return b;
-}
+        b[i] = (float*) malloc(sizeof (float));
 
+    for (int i = 0; i < length_matrix; i++) {
+        float sum = 0;
+        for (int j = 0; j < length_matrix; j++) {
+            sum += A[i][j];
+        }
+        b[i][0] = sum;
+    }
+    return b;
+}
 
 float** create_matrix() {
     float** matrix = (float**) malloc(length_matrix * sizeof (float*));
@@ -38,8 +37,6 @@ float** create_matrix() {
 }
 
 //allocate space for vector matrix[length][1]
-
-
 
 void print_vector(float** vector) {
     for (int i = 0; i < length_matrix; i++)
@@ -132,9 +129,12 @@ void copy_matrix(float** matrix, float** copy) {
 //read matrix from file 
 
 float ** read_matrix_MatrixMarket(FILE * file) {
-	printf("tolerancia:"); scanf("%f%*c", &tol);
-    printf("numero max de iteracoes: ");scanf("%d%*c", &kmax);
-    printf("omega: ");scanf("%f%*c", &omega);
+    printf("tolerancia:");
+    scanf("%f%*c", &tol);
+    printf("numero max de iteracoes: ");
+    scanf("%d%*c", &kmax);
+    printf("omega: ");
+    scanf("%f%*c", &omega);
     fscanf(file, "%*[^\n]%*c");
     fscanf(file, "%d%*c%d%*c%d%*c", &length_matrix, &length_matrix, &quantity_non_zeros);
     float** matrix = (float**) calloc(length_matrix, sizeof (float*));
@@ -148,7 +148,7 @@ float ** read_matrix_MatrixMarket(FILE * file) {
     float valor = 0;
 
     while (fscanf(file, "%d%*c%d%*c%*c%f%*c", &linha, &coluna, &valor) != EOF) {
-        matrix[linha-1][coluna-1] = valor;
+        matrix[coluna - 1][linha - 1] = valor;
     }
     fclose(file);
 
@@ -270,99 +270,97 @@ int return_quantity_non_zeros() {
     return quantity_non_zeros;
 }
 
-float return_omega(){
-	return omega;
+float return_omega() {
+    return omega;
 }
 
-float return_tol(){
-	return tol;
+float return_tol() {
+    return tol;
 }
 
-float return_kmax(){
-	return kmax;
+float return_kmax() {
+    return kmax;
 }
 
-
-
-void copy_vector(float** v1, float** v2){
-	for (int i = 0; i < length_matrix ; i++)
-		v2[i][0] = v1[i][0];
+void copy_vector(float** v1, float** v2) {
+    for (int i = 0; i < length_matrix; i++)
+        v2[i][0] = v1[i][0];
 }
 
-float max(float** v){
-	float max = -FLT_MAX;
-	
-	for (int i = 0 ; i < length_matrix; i++){
-		
-		
-		if (v[i][0] > max)
-			max = v[i][0];
-	}
-	
-	return max;
+float max(float** v) {
+    float max = -FLT_MAX;
+
+    for (int i = 0; i < length_matrix; i++) {
+
+
+        if (v[i][0] > max)
+            max = v[i][0];
+    }
+
+    return max;
 }
 
-float** sub_vector(float** v2 , float** v1){
-	float** sub = (float**) malloc(length_matrix*sizeof(float*));
-	for (int i = 0; i < length_matrix; i++) 
+float** sub_vector(float** v2, float** v1) {
+    float** sub = (float**) malloc(length_matrix * sizeof (float*));
+    for (int i = 0; i < length_matrix; i++)
         sub[i] = (float*) malloc(sizeof (float));
-        
-	for (int i = 0; i < length_matrix; i++){
-		
-			sub[i][0] = mod(v2[i][0] - v1[i][0]);
-		
-	}
-	return sub;
+
+    for (int i = 0; i < length_matrix; i++) {
+
+        sub[i][0] = mod(v2[i][0] - v1[i][0]);
+
+    }
+    return sub;
 }
 
-float error(float** v2, float** v1){
-	float e;
-    
-    float** sub = sub_vector(v2,v1);
-    
+float error(float** v2, float** v1) {
+    float e;
+
+    float** sub = sub_vector(v2, v1);
+
     e = max(sub);
-    destroy_matrix(sub);	
-	e /= max(v2);
-	
-	return e;
+    destroy_matrix(sub);
+    e /= max(v2);
+
+    return e;
 }
 
-float** SOR_solution(float** A, float** b){
-	//alocando vetor solução x 
-	float** x = (float**) calloc(length_matrix,sizeof(float*));
-	for (int i = 0; i < length_matrix; i++) 
-        x[i] = (float*) calloc(1,sizeof (float));
-	
-	printf("vetor b: \n");
-	print_vector(b);
-	int k = 0;
-	float err = 1.0;
-	
-	float** ant = (float**) calloc(length_matrix,sizeof(float*));
-	for (int i = 0; i < length_matrix; i++) 
-        ant[i] = (float*) calloc(1,sizeof (float));
-    
-    copy_vector(ant,x);
-    
-	while ( (k < kmax) && (err > tol)){
-		
-		for (int i = 0; i < length_matrix; i++){
-			double sum = 0;
-			for (int j = 0; j < i; j++)
-				sum += A[i][j]*x[j][0];
-			for (int j = i + 1; j < length_matrix; j++)
-				sum += A[i][j]*x[j][0];
-			
-			x[i][0] = omega*(b[i][0] - sum)/A[i][i] + (1-omega)*ant[i][0];
-			
-		}
-		printf("vetor solucao iteracao %d\n\n", k);
-			print_vector(x);
-		k++;
-		err = error(x, ant);
-		copy_vector(x, ant);
-	}	
-		
-	destroy_matrix(ant);
-	return x;
+float** SOR_solution(float** A, float** b) {
+    //alocando vetor solução x 
+    float** x = (float**) calloc(length_matrix, sizeof (float*));
+    for (int i = 0; i < length_matrix; i++)
+        x[i] = (float*) calloc(1, sizeof (float));
+
+    printf("vetor b: \n");
+    print_vector(b);
+    int k = 0;
+    float err = 1.0;
+
+    float** ant = (float**) calloc(length_matrix, sizeof (float*));
+    for (int i = 0; i < length_matrix; i++)
+        ant[i] = (float*) calloc(1, sizeof (float));
+
+    copy_vector(ant, x);
+
+    while ((k < kmax) && (err > tol)) {
+
+        for (int i = 0; i < length_matrix; i++) {
+            double sum = 0;
+            for (int j = 0; j < i; j++)
+                sum += A[i][j] * x[j][0];
+            for (int j = i + 1; j < length_matrix; j++)
+                sum += A[i][j] * x[j][0];
+
+            x[i][0] = omega * (b[i][0] - sum) / A[i][i] + (1 - omega) * ant[i][0];
+
+        }
+        printf("vetor solucao iteracao %d\n\n", k);
+        print_vector(x);
+        k++;
+        err = error(x, ant);
+        copy_vector(x, ant);
+    }
+
+    destroy_matrix(ant);
+    return x;
 }

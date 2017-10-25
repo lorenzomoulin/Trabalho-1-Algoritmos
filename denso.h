@@ -22,7 +22,7 @@ float ** read_matrix_MatrixMarket(FILE * file);
 
 float mod(float n);
 
-float** LU_solution(float** L, float** U, float** P, float** b); 
+float** LU_solution(float** L, float** U, float** P, float** b);
 
 float** solution_Ux_y(float** U, float** y);
 
@@ -52,7 +52,7 @@ void copy_vector(float** v1, float** v2);
 
 float error(float** v2, float** v1);
 
-float** sub_vector(float** v2 , float** v1);
+float** sub_vector(float** v2, float** v1);
 
 int return_quantity_non_zeros();
 
