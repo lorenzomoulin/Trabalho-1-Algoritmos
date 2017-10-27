@@ -116,7 +116,7 @@ int main(int argc, char** argv) {
     	
         
         
-       	print_matrix_CSR(matrix_CSR);
+       	//print_matrix_CSR(matrix_CSR);
        	
        	float** b = (float**)malloc(quantity_non_zeros*sizeof(float*));
        	for (int i = 0; i < length_matrix ; i++)

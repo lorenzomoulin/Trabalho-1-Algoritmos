@@ -173,8 +173,8 @@ float maxx(float** v){
 	for (int i = 0 ; i < length_matrix; i++){
 		
 		
-		if (v[i][0] > max)
-			max = v[i][0];
+		if (mod(v[i][0]) > max)
+			max = mod(v[i][0]);
 	}
 	
 	return max;
@@ -193,24 +193,19 @@ float errorr(float** v2, float** v1){
     }
     for (int i = 0; i < length_matrix; i++){
 		
-		sub[i][0] = mod(v2[i][0] - v1[i][0]);
+		sub[i][0] = v2[i][0] - v1[i][0];
 		
 	}
-    e = maxx(sub);
+    e = mod(maxx(sub));
     
     //for (int i = 0; i < length_matrix; i++)
       //  free(sub[i]);
     free(sub);
-	float** teste = (float**) calloc(length_matrix,sizeof(float*));
 	
-	for (int i = 0; i < length_matrix; i++) 
-        teste[i] = (float*) calloc(1,sizeof (float));
-    for (int i =0; i < length_matrix; i++)
-    	teste[i][0] = mod (v2[i][0]);
     
-	e /= maxx(teste);
+	e /= mod(maxx(v2));
 	printf("erro:%f\n\n", e);
-	free(teste);
+	
 	
 	return e;
 }
@@ -243,19 +238,22 @@ void SOR_solution_CSR(float** matrix_CSR, float** b, float** x){
 				
 				//printf("coluna %d\n", get_column(matrix_CSR,i,j));
 				//printf("seg fault?\n\n");
-				if(i == get_column(matrix_CSR,i,j)){
+				if(j == i+1){
 					
 					continue;
 				}
 				
 					
 				sum += access_CSR(matrix_CSR,i,j)*x[get_column(matrix_CSR,i,j)][0];
-				printf("elemento de valor %f na linha %d e coluna %d\n\n", access_CSR(matrix_CSR,i,j), i, get_column(matrix_CSR, i,j));
+				//printf("elemento de valor %f na linha %d e coluna %d\n\n", access_CSR(matrix_CSR,i,j), i, get_column(matrix_CSR, i,j));
 			}
 			if (access_CSR(matrix_CSR,i,i+1) == 0){
 				printf("divisao por zero em i=%d\n\n", i);
+				
+				
 			}
 			x[i][0] = omega*(b[i][0] - sum)/access_CSR(matrix_CSR,i,i+1) + (1-omega)*x[i][0];
+			printf("teste2: %f\n", x[i][0]);
 			
 		}
 		//printf("vetor solucao iteracao %d\n\n", k);
@@ -263,7 +261,7 @@ void SOR_solution_CSR(float** matrix_CSR, float** b, float** x){
 		k++;
 		err = errorr(x, ant);
 		copy_vectorr(x, ant);
-		printf("iteracao %d\n", k);
+		//printf("iteracao %d\n", k);
 	}	
 	printf("norma da solucao: %f\n\n", maxx(x));
 	//destroy_matrix(x);
