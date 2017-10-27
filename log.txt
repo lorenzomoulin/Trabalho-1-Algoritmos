@@ -1,0 +1,236 @@
+<---------------------TESTE MATRIZ bcsstk03.mtx------------------->
+
+testando LU...
+tempo de execucao em segundos: 0.003
+norma da solucao : 1.000001
+
+testando SOR DENSO input1...
+tempo de execucao: 0.005
+norma da solucao: 1.000069	
+convergencia obtida com 96 iteracoes
+
+testando SOR DENSO input2...
+tempo de execucao: 0.002
+norma da solucao: 1.000028
+convergencia obtida com 49 iteracoes
+
+testando SOR DENSO input3...
+tempo de execucao: 0.002
+norma da solucao: 1.000010
+convergencia obtida com 32 iteracoes
+
+testando SOR DENSO input4...
+tempo de execucao: 0.001
+norma da solucao: 1.000005
+convergencia obtida com 23 iteracoes
+
+testando SOR DENSO input5...
+tempo de execucao: 0.001
+norma da solucao: 1.000008
+convergencia obtida com 17 iteracoes
+
+testando SOR DENSO input6...
+tempo de execucao: 0.002
+norma da solucao: 1.000005
+convergencia obtida com 31 iteracoes
+
+testando SOR DENSO input7...
+tempo de execucao: 53.100
+norma da solucao: 1.000011
+convergencia obtida com 1000001 iteracoes
+
+testando SOR DENSO input8...
+tempo de execucao: 52.652
+norma da solucao: 1.000089
+convergencia obtida com 1000001 iteracoes
+
+testando SOR DENSO input9...
+tempo de execucao: 50.160
+norma da solucao: 104544872693760.000000
+convergencia obtida com 1000001 iteracoes
+
+---------------------TERMINOU------------------------
+
+<---------------------TESTE MATRIZ hor131.mtx------------------->
+
+testando LU...
+tempo de execucao em segundos: 0.172
+norma da solucao : 18701046.000000
+
+testando SOR DENSO input1...
+tempo de execucao: 6.897
+norma da solucao: 1.032008
+convergencia obtida com 9258 iteracoes
+
+testando SOR DENSO input2...
+tempo de execucao: 3.939
+norma da solucao: 1.013952
+convergencia obtida com 5336 iteracoes
+
+testando SOR DENSO input3...
+tempo de execucao: 2.784
+norma da solucao: 1.008066
+convergencia obtida com 3608 iteracoes
+
+testando SOR DENSO input4...
+tempo de execucao: 1.860
+norma da solucao: 1.005113
+convergencia obtida com 2595 iteracoes
+
+testando SOR DENSO input5...
+tempo de execucao: 1.595
+norma da solucao: 1.003380
+convergencia obtida com 1904 iteracoes
+
+testando SOR DENSO input6...
+tempo de execucao: 1.081
+norma da solucao: 1.002230
+convergencia obtida com 1387 iteracoes
+
+testando SOR DENSO input7...
+tempo de execucao: 0.221
+norma da solucao: inf
+convergencia obtida com 297 iteracoes
+
+testando SOR DENSO input8...
+tempo de execucao: 0.110
+norma da solucao: inf
+convergencia obtida com 142 iteracoes
+
+testando SOR DENSO input9...
+tempo de execucao: 0.078
+norma da solucao: inf
+convergencia obtida com 100 iteracoes
+
+---------------------TERMINOU------------------------
+
+<---------------------TESTE MATRIZ gr_30_30.mtx------------------->
+
+testando LU...
+tempo de execucao em segundos: 1.610
+norma da solucao : 1.000000
+
+testando SOR DENSO input1...
+tempo de execucao: 0.278
+norma da solucao: 1.000000
+convergencia obtida com 90 iteracoes
+
+testando SOR DENSO input2...
+tempo de execucao: 0.149
+norma da solucao: 1.000000
+convergencia obtida com 47 iteracoes
+
+testando SOR DENSO input3...
+tempo de execucao: 0.100
+norma da solucao: 1.000000
+convergencia obtida com 31 iteracoes
+
+testando SOR DENSO input4...
+tempo de execucao: 0.082
+norma da solucao: 1.000000
+convergencia obtida com 23 iteracoes
+
+testando SOR DENSO input5...
+tempo de execucao: 0.057
+norma da solucao: 1.000000
+convergencia obtida com 18 iteracoes
+
+testando SOR DENSO input6...
+tempo de execucao: 0.061
+norma da solucao: 1.000003
+convergencia obtida com 17 iteracoes
+
+testando SOR DENSO input7...
+tempo de execucao: 0.124
+norma da solucao: 1.000004
+convergencia obtida com 36 iteracoes
+
+testando SOR DENSO input8...
+tempo de execucao: 0.765
+norma da solucao: 1.000004
+convergencia obtida com 219 iteracoes
+
+testando SOR DENSO input9...
+tempo de execucao: 3.659
+norma da solucao: 1.000001
+convergencia obtida com 1114 iteracoes
+
+---------------------TERMINOU------------------------
+
+<---------------------TESTE MATRIZ orsirr_1.mtx------------------->
+
+testando LU...
+tempo de execucao em segundos: 2.086
+norma da solucao : 1.008011
+
+testando SOR DENSO input1...
+tempo de execucao: 150.588
+norma da solucao: 0.988660
+convergencia obtida com 36566 iteracoes
+
+testando SOR DENSO input2...
+tempo de execucao: 87.031
+norma da solucao: 0.995142
+convergencia obtida com 20576 iteracoes
+
+testando SOR DENSO input3...
+tempo de execucao: 54.891
+norma da solucao: 0.997150
+convergencia obtida com 13641 iteracoes
+
+testando SOR DENSO input4...
+tempo de execucao: 41.534
+norma da solucao: 0.998215
+convergencia obtida com 9663 iteracoes
+
+testando SOR DENSO input5...
+tempo de execucao: 29.603
+norma da solucao: 0.998859
+convergencia obtida com 7009 iteracoes
+
+testando SOR DENSO input6...
+tempo de execucao: 20.357
+norma da solucao: 0.999255
+convergencia obtida com 5026 iteracoes
+
+testando SOR DENSO input7...
+tempo de execucao: 14.062
+norma da solucao: 0.999549
+convergencia obtida com 3489 iteracoes
+
+testando SOR DENSO input8...
+tempo de execucao: 9.465
+norma da solucao: 0.999755
+convergencia obtida com 2197 iteracoes
+
+testando SOR DENSO input9...
+tempo de execucao: 4.633
+norma da solucao: 0.999910
+convergencia obtida com 1061 iteracoes
+
+---------------------TERMINOU------------------------
+
+<---------------------TESTE MATRIZ sherman5.mtx------------------->
+
+testando LU...
+ERRO: Nao foi possivel abrir o arquivo da matrix!
+testando SOR DENSO input1...
+ERRO: Nao foi possivel abrir o arquivo da matrix!
+testando SOR DENSO input2...
+ERRO: Nao foi possivel abrir o arquivo da matrix!
+testando SOR DENSO input3...
+ERRO: Nao foi possivel abrir o arquivo da matrix!
+testando SOR DENSO input4...
+ERRO: Nao foi possivel abrir o arquivo da matrix!
+testando SOR DENSO input5...
+ERRO: Nao foi possivel abrir o arquivo da matrix!
+testando SOR DENSO input6...
+ERRO: Nao foi possivel abrir o arquivo da matrix!
+testando SOR DENSO input7...
+ERRO: Nao foi possivel abrir o arquivo da matrix!
+testando SOR DENSO input8...
+ERRO: Nao foi possivel abrir o arquivo da matrix!
+testando SOR DENSO input9...
+ERRO: Nao foi possivel abrir o arquivo da matrix!
+---------------------TERMINOU------------------------
+
