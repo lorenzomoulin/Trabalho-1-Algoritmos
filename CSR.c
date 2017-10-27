@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
+#include <time.h>
 
 int length_matrix, quantity_non_zeros, kmax, col;
 float tol, omega;
@@ -43,9 +44,9 @@ float return_kmax_CSR(){
 
 void set_global(FILE * file){
 	fscanf(file, "%d %d %d\n", &length_matrix, &length_matrix, &quantity_non_zeros);
-	printf("tolerancia:"); scanf("%f%*c", &tol);
-    printf("numero max de iteracoes: ");scanf("%d%*c", &kmax);
-    printf("omega: ");scanf("%f%*c", &omega);
+	 scanf("%f%*c", &tol);
+    scanf("%d%*c", &kmax);
+    scanf("%f%*c", &omega);
 }
 
 float ** read_matrix_MatrixMarket_CSR(FILE * file) {
@@ -53,7 +54,7 @@ float ** read_matrix_MatrixMarket_CSR(FILE * file) {
     
     float** matrix = (float**) calloc(length_matrix, sizeof (float*));
 
-    //int tam = length_matrix, qnt = quantity_non_zeros;
+    
 
     for (int i = 0; i < length_matrix; i++) {
         matrix[i] = (float*) calloc(length_matrix, sizeof (float));
@@ -80,7 +81,7 @@ float** create_matrix_CSR(float ** matriz_transposta) {
     float *JA = (float*) malloc(quantity_non_zeros * sizeof (float));
     float *IA = (float*) malloc((length_matrix + 1) * sizeof (float));
 
-    IA[0] = 1;
+    IA[0] = 0;
 
     for (i = 0; i < length_matrix; i++) {
         for (j = 0; j < length_matrix; j++) {
@@ -91,7 +92,7 @@ float** create_matrix_CSR(float ** matriz_transposta) {
                 k++;
             }
         }
-        IA[l] = contAux;
+        IA[l] = contAux-1;
         l++;
     }
     float** matrix_CSR = (float**) malloc(length_matrix * sizeof (float*));
@@ -139,11 +140,11 @@ int number_elements_row(float** A, int row){
 
 float access_CSR(float** A, int i, int j){
 	
-	return A[0][(int)(A[2][i]+j-2)];
+	return A[0][(int)(A[2][i]+j-1)];
 }
 
 int get_column(float** A, int i, int j){
-	return (int)A[1][(int)(A[2][i]+j-2)];
+	return (int)A[1][(int)(A[2][i]+j-1)];
 }
 
 void generate_b_CSR(float** matrix,float** b){
@@ -158,7 +159,6 @@ void generate_b_CSR(float** matrix,float** b){
 		}
 		b[i][0] = sum; //TAVA b[i][0]
 	}
-	printf("gerou b\n");
 	
 }
 
@@ -198,13 +198,12 @@ float errorr(float** v2, float** v1){
 	}
     e = mod(maxx(sub));
     
-    //for (int i = 0; i < length_matrix; i++)
-      //  free(sub[i]);
+   
     free(sub);
 	
     
 	e /= mod(maxx(v2));
-	printf("erro:%f\n\n", e);
+	
 	
 	
 	return e;
@@ -226,44 +225,39 @@ void SOR_solution_CSR(float** matrix_CSR, float** b, float** x){
     copy_vectorr(ant,x);
 	while ( (k < kmax) && (err > tol)){
 	
-	
+		
 		for (int i = 0; i < length_matrix; i++){
 			float sum = 0;
 			
-	
-			int n = number_elements_row(matrix_CSR, i);
+			float diag;
 			
-			for (int j = 1; j <= n; j++){
+			for (int j = matrix_CSR[2][i]; j < matrix_CSR[2][i+1]; j++){
 			
 				
-				//printf("coluna %d\n", get_column(matrix_CSR,i,j));
-				//printf("seg fault?\n\n");
-				if(j == i+1){
-					
+				
+				if(i == matrix_CSR[1][j]){
+					diag = matrix_CSR[0][j];
 					continue;
 				}
 				
 					
-				sum += access_CSR(matrix_CSR,i,j)*x[get_column(matrix_CSR,i,j)][0];
-				//printf("elemento de valor %f na linha %d e coluna %d\n\n", access_CSR(matrix_CSR,i,j), i, get_column(matrix_CSR, i,j));
-			}
-			if (access_CSR(matrix_CSR,i,i+1) == 0){
-				printf("divisao por zero em i=%d\n\n", i);
-				
+				sum += matrix_CSR[0][j]*x[(int)matrix_CSR[1][j]][0];
 				
 			}
-			x[i][0] = omega*(b[i][0] - sum)/access_CSR(matrix_CSR,i,i+1) + (1-omega)*x[i][0];
-			printf("teste2: %f\n", x[i][0]);
+			
+			x[i][0] = omega*(b[i][0] - sum)/diag + (1-omega)*x[i][0];
+			
 			
 		}
-		//printf("vetor solucao iteracao %d\n\n", k);
-		//print_vector(x);
+		
 		k++;
 		err = errorr(x, ant);
 		copy_vectorr(x, ant);
-		//printf("iteracao %d\n", k);
+		
 	}	
+	
 	printf("norma da solucao: %f\n\n", maxx(x));
+	
 	//destroy_matrix(x);
     //destroy_matrixx(ant);
 	

@@ -127,8 +127,10 @@ int main(int argc, char** argv) {
        	float** x = (float**)malloc(quantity_non_zeros*sizeof(float*));
        	for (int i = 0; i < length_matrix ; i++)
        		x[i] = (float*)malloc(sizeof(float));
-       	
+       	clock_t begin = clock();
        	SOR_solution_CSR(matrix_CSR, b, x);
+       	clock_t end = clock();
+		printf("tempo de execucao em segundos: %.3lf\n", (double)(end-begin)/CLOCKS_PER_SEC);
         //print_vector(x);
         destroy_matrixx(b);
         //destroy_matrixx(x);
