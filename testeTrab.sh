@@ -2,7 +2,7 @@
 
 gcc *.c
 
-for name in {bcsstk03.mtx,hor131.mtx,gr_30_30.mtx,orsirr_1.mtx,sherman5.mtx,wathen100.mtx,FEM_3D_thermal1.mtx}
+for name in {bcsstk03.mtx,hor131.mtx,gr_30_30.mtx,orsirr_1.mtx,sherman5.mtx,wathen100.mtx,FEM_3D_thermal1.mtx,cage13.mtx}
 do
 	echo "<---------------------TESTE MATRIZ $name------------------->" >> log.txt
 	echo >> log.txt
